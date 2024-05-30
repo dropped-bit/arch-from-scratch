@@ -127,19 +127,22 @@ $ cryptsetup open /dev/nvme1n1p1 arch-home
 
 ## Volume setup
 
-Create the volume and volume group
+Create physical volume
 
 ```
-$ pvcreate /dev/mapper/luks_lvm
+pvcreate /dev/mapper/luks_lvm
+```
 
-$ vgcreate arch /dev/mapper/luks_lvm
+Create volume group
+```
+vgcreate dropped-arch /dev/mapper/luks_lvm
 ```
 
 Create a volume for your swap space. A good size for this is your disk space + 2GB.
 In my case 66G.
 
 ```
-$ lvcreate -n swap -L 66G arch
+lvcreate -L 66G arch -n swapp
 ```
 
 Next you have a few options depending on your setup
@@ -154,7 +157,7 @@ Single volume is the most straightforward. To do this, just use the entire
 disk space for your root volume
 
 ```
-$ lvcreate -n root -l +100%FREE arch
+$ lvcreate -l +100%FREE -n system
 ```
 
 #### Two volumes
